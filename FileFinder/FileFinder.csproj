@@ -53,7 +53,6 @@
     <Compile Include="AppPathFinder.Designer.cs">
       <DependentUpon>AppPathFinder.cs</DependentUpon>
     </Compile>
-    <Compile Include="PathFinder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AppPathFinder.resx">

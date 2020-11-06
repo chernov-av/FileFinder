@@ -38,6 +38,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.button_stop = new System.Windows.Forms.Button();
+            this.backgroundWorkerApp = new System.ComponentModel.BackgroundWorker();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -58,6 +61,7 @@
             this.textBox_path.Name = "textBox_path";
             this.textBox_path.Size = new System.Drawing.Size(214, 20);
             this.textBox_path.TabIndex = 1;
+            this.textBox_path.Text = "D:\\";
             // 
             // label_path
             // 
@@ -103,6 +107,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button_stop);
             this.panel1.Controls.Add(this.button_find);
             this.panel1.Controls.Add(this.textBox_path);
             this.panel1.Controls.Add(this.button_setPath);
@@ -111,7 +116,7 @@
             this.panel1.Controls.Add(this.label_path);
             this.panel1.Location = new System.Drawing.Point(319, 23);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(324, 137);
+            this.panel1.Size = new System.Drawing.Size(324, 155);
             this.panel1.TabIndex = 5;
             // 
             // statusStrip
@@ -128,17 +133,43 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
-            // PathFinder
+            // button_stop
+            // 
+            this.button_stop.Location = new System.Drawing.Point(168, 113);
+            this.button_stop.Name = "button_stop";
+            this.button_stop.Size = new System.Drawing.Size(98, 23);
+            this.button_stop.TabIndex = 0;
+            this.button_stop.Text = "Stop";
+            this.button_stop.UseVisualStyleBackColor = true;
+            this.button_stop.Click += new System.EventHandler(this.button_stop_Click);
+            // 
+            // backgroundWorkerApp
+            // 
+            this.backgroundWorkerApp.WorkerReportsProgress = true;
+            this.backgroundWorkerApp.WorkerSupportsCancellation = true;
+            this.backgroundWorkerApp.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerApp_ProgressChanged);
+            this.backgroundWorkerApp.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerApp_RunWorkerCompleted);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(371, 223);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "label1";
+            // 
+            // AppPathFinder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(658, 324);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.treeView1);
-            this.Name = "PathFinder";
+            this.Name = "AppPathFinder";
             this.Text = "FileFinder";
-            this.Load += new System.EventHandler(this.PathFinder_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.statusStrip.ResumeLayout(false);
@@ -160,6 +191,9 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
+        private System.Windows.Forms.Button button_stop;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerApp;
+        private System.Windows.Forms.Label label1;
     }
 }
 
