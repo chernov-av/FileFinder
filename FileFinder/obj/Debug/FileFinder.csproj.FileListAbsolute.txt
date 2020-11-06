@@ -1,0 +1,10 @@
+D:\Project\FileFinder\FileFinder\bin\Debug\FileFinder.exe.config
+D:\Project\FileFinder\FileFinder\bin\Debug\FileFinder.exe
+D:\Project\FileFinder\FileFinder\bin\Debug\FileFinder.pdb
+D:\Project\FileFinder\FileFinder\obj\Debug\FileFinder.csprojAssemblyReference.cache
+D:\Project\FileFinder\FileFinder\obj\Debug\FileFinder.Properties.Resources.resources
+D:\Project\FileFinder\FileFinder\obj\Debug\FileFinder.csproj.GenerateResource.cache
+D:\Project\FileFinder\FileFinder\obj\Debug\FileFinder.csproj.CoreCompileInputs.cache
+D:\Project\FileFinder\FileFinder\obj\Debug\FileFinder.exe
+D:\Project\FileFinder\FileFinder\obj\Debug\FileFinder.pdb
+D:\Project\FileFinder\FileFinder\obj\Debug\FileFinder.AppPathFinder.resources
