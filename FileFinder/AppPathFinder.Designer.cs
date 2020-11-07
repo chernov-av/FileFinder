@@ -36,11 +36,16 @@
             this.button_setPath = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button_stop = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.button_stop = new System.Windows.Forms.Button();
             this.backgroundWorkerApp = new System.ComponentModel.BackgroundWorker();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label_FilesFoundText = new System.Windows.Forms.Label();
+            this.label_sumFilesText = new System.Windows.Forms.Label();
+            this.label_allFiles = new System.Windows.Forms.Label();
+            this.label_filesFound = new System.Windows.Forms.Label();
+            this.label_TimeText = new System.Windows.Forms.Label();
+            this.label_time = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -107,6 +112,12 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label_TimeText);
+            this.panel1.Controls.Add(this.label_filesFound);
+            this.panel1.Controls.Add(this.label_time);
+            this.panel1.Controls.Add(this.label_allFiles);
+            this.panel1.Controls.Add(this.label_sumFilesText);
+            this.panel1.Controls.Add(this.label_FilesFoundText);
             this.panel1.Controls.Add(this.button_stop);
             this.panel1.Controls.Add(this.button_find);
             this.panel1.Controls.Add(this.textBox_path);
@@ -116,8 +127,18 @@
             this.panel1.Controls.Add(this.label_path);
             this.panel1.Location = new System.Drawing.Point(319, 23);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(324, 155);
+            this.panel1.Size = new System.Drawing.Size(324, 276);
             this.panel1.TabIndex = 5;
+            // 
+            // button_stop
+            // 
+            this.button_stop.Location = new System.Drawing.Point(168, 113);
+            this.button_stop.Name = "button_stop";
+            this.button_stop.Size = new System.Drawing.Size(98, 23);
+            this.button_stop.TabIndex = 0;
+            this.button_stop.Text = "Stop";
+            this.button_stop.UseVisualStyleBackColor = true;
+            this.button_stop.Click += new System.EventHandler(this.button_stop_Click);
             // 
             // statusStrip
             // 
@@ -133,38 +154,71 @@
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
-            // button_stop
-            // 
-            this.button_stop.Location = new System.Drawing.Point(168, 113);
-            this.button_stop.Name = "button_stop";
-            this.button_stop.Size = new System.Drawing.Size(98, 23);
-            this.button_stop.TabIndex = 0;
-            this.button_stop.Text = "Stop";
-            this.button_stop.UseVisualStyleBackColor = true;
-            this.button_stop.Click += new System.EventHandler(this.button_stop_Click);
-            // 
             // backgroundWorkerApp
             // 
-            this.backgroundWorkerApp.WorkerReportsProgress = true;
             this.backgroundWorkerApp.WorkerSupportsCancellation = true;
-            this.backgroundWorkerApp.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerApp_ProgressChanged);
+            this.backgroundWorkerApp.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerApp_DoWork);
             this.backgroundWorkerApp.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerApp_RunWorkerCompleted);
             // 
-            // label1
+            // label_FilesFoundText
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(371, 223);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "label1";
+            this.label_FilesFoundText.AutoSize = true;
+            this.label_FilesFoundText.Location = new System.Drawing.Point(17, 216);
+            this.label_FilesFoundText.Name = "label_FilesFoundText";
+            this.label_FilesFoundText.Size = new System.Drawing.Size(61, 13);
+            this.label_FilesFoundText.TabIndex = 4;
+            this.label_FilesFoundText.Text = "Files found:";
+            // 
+            // label_sumFilesText
+            // 
+            this.label_sumFilesText.AutoSize = true;
+            this.label_sumFilesText.Location = new System.Drawing.Point(17, 185);
+            this.label_sumFilesText.Name = "label_sumFilesText";
+            this.label_sumFilesText.Size = new System.Drawing.Size(55, 13);
+            this.label_sumFilesText.TabIndex = 4;
+            this.label_sumFilesText.Text = "Total files:";
+            // 
+            // label_allFiles
+            // 
+            this.label_allFiles.AutoSize = true;
+            this.label_allFiles.Location = new System.Drawing.Point(168, 185);
+            this.label_allFiles.Name = "label_allFiles";
+            this.label_allFiles.Size = new System.Drawing.Size(13, 13);
+            this.label_allFiles.TabIndex = 5;
+            this.label_allFiles.Text = "0";
+            // 
+            // label_filesFound
+            // 
+            this.label_filesFound.AutoSize = true;
+            this.label_filesFound.Location = new System.Drawing.Point(168, 216);
+            this.label_filesFound.Name = "label_filesFound";
+            this.label_filesFound.Size = new System.Drawing.Size(13, 13);
+            this.label_filesFound.TabIndex = 5;
+            this.label_filesFound.Text = "0";
+            // 
+            // label_TimeText
+            // 
+            this.label_TimeText.AutoSize = true;
+            this.label_TimeText.Location = new System.Drawing.Point(17, 150);
+            this.label_TimeText.Name = "label_TimeText";
+            this.label_TimeText.Size = new System.Drawing.Size(33, 13);
+            this.label_TimeText.TabIndex = 6;
+            this.label_TimeText.Text = "Time:";
+            // 
+            // label_time
+            // 
+            this.label_time.AutoSize = true;
+            this.label_time.Location = new System.Drawing.Point(168, 150);
+            this.label_time.Name = "label_time";
+            this.label_time.Size = new System.Drawing.Size(13, 13);
+            this.label_time.TabIndex = 5;
+            this.label_time.Text = "0";
             // 
             // AppPathFinder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(658, 324);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.treeView1);
@@ -193,7 +247,12 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private System.Windows.Forms.Button button_stop;
         private System.ComponentModel.BackgroundWorker backgroundWorkerApp;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label_filesFound;
+        private System.Windows.Forms.Label label_allFiles;
+        private System.Windows.Forms.Label label_sumFilesText;
+        private System.Windows.Forms.Label label_FilesFoundText;
+        private System.Windows.Forms.Label label_TimeText;
+        private System.Windows.Forms.Label label_time;
     }
 }
 

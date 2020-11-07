@@ -13,5 +13,6 @@ namespace FileFinder
         public const string PathError = "Path error. Choose the path";
         public const string FileNameError = "File name error. Enter the file name";
         public const string Done = "Done";
+        public const string Canceled = "Canceled";
     }
 }

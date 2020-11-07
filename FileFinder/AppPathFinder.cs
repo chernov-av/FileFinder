@@ -16,27 +16,26 @@ namespace FileFinder
         private List<string> FileList = new List<string>();
         private List<string> FolderList = new List<string>();
 
+        private int FileAmount = 0;
+        private Timer timer;
+        int hour = 0, minute = 0, second = 0;
+
         public AppPathFinder()
         {
             InitializeComponent();
             InitializeBackgroundWorker();
-            this.UpdateStatus(AppStatus.Ready);
-
+            UpdateStatus(AppStatus.Ready);
         }
 
         private void InitializeBackgroundWorker()
         {
             backgroundWorkerApp = new BackgroundWorker();
-            backgroundWorkerApp.WorkerReportsProgress = true;
             backgroundWorkerApp.WorkerSupportsCancellation = true;
             backgroundWorkerApp.DoWork +=
                 new DoWorkEventHandler(backgroundWorkerApp_DoWork);
             backgroundWorkerApp.RunWorkerCompleted +=
                 new RunWorkerCompletedEventHandler(
                     backgroundWorkerApp_RunWorkerCompleted);
-            backgroundWorkerApp.ProgressChanged +=
-                new ProgressChangedEventHandler(
-                    backgroundWorkerApp_ProgressChanged);
         }
 
         private void button_setPath_Click(object sender, EventArgs e)
@@ -45,8 +44,8 @@ namespace FileFinder
             DialogResult dialogResult = folderBrowserDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                this.textBox_path.Text = folderBrowserDialog.SelectedPath;
-                this.toolStripStatusLabel.Text = AppStatus.PathIsSelected;
+                textBox_path.Text = folderBrowserDialog.SelectedPath;
+                toolStripStatusLabel.Text = AppStatus.PathIsSelected;
             }
         }
 
@@ -54,26 +53,50 @@ namespace FileFinder
         {
             if (string.IsNullOrWhiteSpace(textBox_path.Text))
             {
-                this.UpdateStatus(AppStatus.PathError);
+                UpdateStatus(AppStatus.PathError);
                 return;
             }
             else if (string.IsNullOrWhiteSpace(textBox_file.Text))
             {
-                this.UpdateStatus(AppStatus.FileNameError);
+                UpdateStatus(AppStatus.FileNameError);
                 return;
             }
             else
             {
-                this.button_find.Enabled = false;
-                this.button_stop.Enabled = true;
-                this.backgroundWorkerApp.RunWorkerAsync(Tuple.Create(textBox_path.Text, textBox_file.Text));
+                button_find.Enabled = false;
+                button_stop.Enabled = true;
+                timer = new Timer();
+                timer.Tick+=new EventHandler(TimerTick);
+                timer.Interval = 1000;
+                hour = 0;
+                minute = 0;
+                second = 1;
+                timer.Start();
+                backgroundWorkerApp.RunWorkerAsync(Tuple.Create(textBox_path.Text, textBox_file.Text));
+            }
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            label_time.Text = hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
+            label_time.Refresh();
+            if (second == 59)
+            {
+                second = 0;
+                minute++;
+            }
+            else { second++; }
+            if (minute == 59)
+            {
+                minute = 0;
+                hour++;
             }
         }
 
         private void backgroundWorkerApp_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
-            this.FindFile(e.Argument as Tuple<string,string>, worker, e);
+            FindFile(e.Argument as Tuple<string,string>, worker, e);
             e.Result = 1;
         }
 
@@ -89,50 +112,64 @@ namespace FileFinder
             {
                 try
                 {
-                    _worker.ReportProgress(100, _path);
-                    statusStrip.Invoke((MethodInvoker)delegate {
-                        toolStripStatusLabel.Text = _path;
+                    //Update toolStrip and show current folder
+                    statusStrip.Invoke((MethodInvoker) delegate 
+                    {
+                        if (_path.Length > 100)
+                        {
+                            toolStripStatusLabel.Text = "..."+_path.Substring(_path.Length - 100);
+                        }
+                        else
+                        {
+                            toolStripStatusLabel.Text = _path;
+                        }
                     });
+
                     string[] SubDir = Directory.GetDirectories(_path);
+
                     for (int i = 0; i < SubDir.Length; i++)
                     {
                         FindFile(Tuple.Create(SubDir[i], _fileName), _worker, e);
                     }
+
+                    //Count all files and update label
+                    string[] AllFiles = Directory.GetFiles(_path);
+                    FileAmount += AllFiles.Length;
+
+                    label_allFiles.Invoke((MethodInvoker) delegate
+                    {
+                        label_allFiles.Text = FileAmount.ToString();
+                    });
+
+                    //Find files and update tree and file amount
                     string[] File = Directory.GetFiles(_path, _fileName);
 
                     for (int i = 0; i < File.Length; i++)
                     {
-                        this.FileList.Add(File[i]);
-                        this.FolderList.Add(_path);
-                        MessageBox.Show(File[i] + '\n' + _path);
+                        FileList.Add(File[i]);
+                        FolderList.Add(_path);
+
+                        label_filesFound.Invoke((MethodInvoker) delegate
+                        {
+                            label_filesFound.Text = this.FileList.Count.ToString();
+                        });
                     }
                 }
                 catch (Exception exc)
-                {
-                  //  MessageBox.Show(exc.Message);
-                 //return;
-                }
+                {}
             }
         }
 
         private void UpdateStatus(string _status)
         {
-            this.toolStripStatusLabel.Text = _status;
-            this.statusStrip.Refresh();
+            toolStripStatusLabel.Text = _status;
+            statusStrip.Refresh();
         }
 
         private void button_stop_Click(object sender, EventArgs e)
         {
-            this.backgroundWorkerApp.CancelAsync();
-            this.button_stop.Enabled = false;
-        }
-
-        private void backgroundWorkerApp_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            // this.UpdateStatus(e.UserState.ToString());
-           // toolStripStatusLabel.Text = e.UserState as String;
-           // label1.Text = e.UserState.ToString();
-          //  statusStrip.Refresh();
+            backgroundWorkerApp.CancelAsync();
+            button_stop.Enabled = false;
         }
 
         private void backgroundWorkerApp_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -143,15 +180,16 @@ namespace FileFinder
             }
             else if (e.Cancelled)
             {
-                this.UpdateStatus(AppStatus.Canceled);
+                UpdateStatus(AppStatus.Canceled);
             }
             else
             {
-                this.UpdateStatus(AppStatus.Done);
+                UpdateStatus(AppStatus.Done);
             }
 
-            this.button_find.Enabled = true;
-            this.button_stop.Enabled = false;
+            button_find.Enabled = true;
+            button_stop.Enabled = false;
+            timer.Stop();
         }
     }
 }
