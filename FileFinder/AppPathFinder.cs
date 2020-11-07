@@ -25,6 +25,8 @@ namespace FileFinder
 
         private System.Threading.ManualResetEvent _busy;
 
+        private bool isDoubleClick = false;
+
         public AppPathFinder()
         {
             InitializeComponent();
@@ -74,6 +76,7 @@ namespace FileFinder
                 else
                 {
                     button_stop.Enabled = true;
+                    button_find.Enabled = false;
 
                     FileList.Clear();
                     FolderList.Clear();
@@ -84,6 +87,7 @@ namespace FileFinder
                     timer = new Timer();
                     timer.Tick += new EventHandler(TimerTick);
                     timer.Interval = 1000;
+                    label_time.Text = "0:0:0";
                     hour = 0;
                     minute = 0;
                     second = 1;
@@ -245,8 +249,42 @@ namespace FileFinder
             SetWorkerMode(button_pauseResume.Text == "Resume");
         }
 
+        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            try
+            {
+                //if (!e.Node.Text.Contains("."))
+                System.Diagnostics.Process.Start(@e.Node.FullPath);
+            }
+            catch (System.ComponentModel.Win32Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+        }
+
+        private void treeView1_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            if (isDoubleClick && e.Action == TreeViewAction.Collapse)
+                e.Cancel = true;
+        }
+
+        private void treeView1_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            if (isDoubleClick && e.Action == TreeViewAction.Expand)
+                e.Cancel = true;
+        }
+
+        private void treeView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            isDoubleClick = e.Clicks > 1;
+        }
+
         private void button_stop_Click(object sender, EventArgs e)
         {
+            if (button_pauseResume.Text == "Resume")
+            {
+                button_pauseResume_Click(sender,e);
+            }
             backgroundWorkerApp.CancelAsync();
             button_stop.Enabled = false;
         }
@@ -265,7 +303,6 @@ namespace FileFinder
             {
                 UpdateStatus(AppStatus.Done);
             }
-
             button_find.Enabled = true;
             button_stop.Enabled = false;
             timer.Stop();

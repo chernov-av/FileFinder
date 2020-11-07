@@ -110,6 +110,10 @@
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(293, 278);
             this.treeView1.TabIndex = 4;
+            this.treeView1.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeCollapse);
+            this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeExpand);
+            this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
+            this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
             // 
             // panel1
             // 
@@ -155,9 +159,9 @@
             this.label_time.AutoSize = true;
             this.label_time.Location = new System.Drawing.Point(168, 150);
             this.label_time.Name = "label_time";
-            this.label_time.Size = new System.Drawing.Size(13, 13);
+            this.label_time.Size = new System.Drawing.Size(31, 13);
             this.label_time.TabIndex = 5;
-            this.label_time.Text = "0";
+            this.label_time.Text = "0:0:0";
             // 
             // label_allFiles
             // 
@@ -213,6 +217,7 @@
             this.statusStrip.Location = new System.Drawing.Point(0, 302);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(658, 22);
+            this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 6;
             // 
             // toolStripStatusLabel
@@ -234,6 +239,8 @@
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.treeView1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "AppPathFinder";
             this.Text = "FileFinder";
             this.panel1.ResumeLayout(false);
