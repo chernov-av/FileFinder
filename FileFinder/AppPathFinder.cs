@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,7 +19,11 @@ namespace FileFinder
 
         private int FileAmount = 0;
         private Timer timer;
-        int hour = 0, minute = 0, second = 0;
+        int hour, minute, second;
+
+        Regex reg = new Regex(@"^^(?!p_|t_).*");
+
+        private System.Threading.ManualResetEvent _busy;
 
         public AppPathFinder()
         {
@@ -36,7 +41,8 @@ namespace FileFinder
             backgroundWorkerApp.RunWorkerCompleted +=
                 new RunWorkerCompletedEventHandler(
                     backgroundWorkerApp_RunWorkerCompleted);
-        }
+       _busy = new System.Threading.ManualResetEvent(false);
+    }
 
         private void button_setPath_Click(object sender, EventArgs e)
         {
@@ -51,28 +57,52 @@ namespace FileFinder
 
         private void button_find_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(textBox_path.Text))
+            if (button_find.Text == "Find")
             {
-                UpdateStatus(AppStatus.PathError);
-                return;
+                if (string.IsNullOrWhiteSpace(textBox_path.Text))
+                {
+                    UpdateStatus(AppStatus.PathError);
+                    return;
+                }
+                else if (string.IsNullOrWhiteSpace(textBox_file.Text))
+                {
+                    UpdateStatus(AppStatus.FileNameError);
+                    return;
+                }
+                else
+                {
+                    button_stop.Enabled = true;
+                    FileList.Clear();
+                    FolderList.Clear();
+                    label_filesFound.Text = "0";
+                    label_allFiles.Text = "0";
+                    FileAmount = 0;
+                    timer = new Timer();
+                    timer.Tick += new EventHandler(TimerTick);
+                    timer.Interval = 1000;
+                    hour = 0;
+                    minute = 0;
+                    second = 1;
+                    timer.Start();
+                    SetWorkerMode(true);
+                    backgroundWorkerApp.RunWorkerAsync(Tuple.Create(textBox_path.Text, textBox_file.Text));
+                }
             }
-            else if (string.IsNullOrWhiteSpace(textBox_file.Text))
+        }
+
+        private void SetWorkerMode(bool running)
+        {
+            if (running)
             {
-                UpdateStatus(AppStatus.FileNameError);
-                return;
+                button_pauseResume.Text = "Pause";
+                timer.Start();
+                _busy.Set();
             }
             else
             {
-                button_find.Enabled = false;
-                button_stop.Enabled = true;
-                timer = new Timer();
-                timer.Tick+=new EventHandler(TimerTick);
-                timer.Interval = 1000;
-                hour = 0;
-                minute = 0;
-                second = 1;
-                timer.Start();
-                backgroundWorkerApp.RunWorkerAsync(Tuple.Create(textBox_path.Text, textBox_file.Text));
+                button_pauseResume.Text = "Resume";
+                timer.Stop();
+                _busy.Reset();
             }
         }
 
@@ -112,6 +142,7 @@ namespace FileFinder
             {
                 try
                 {
+                    _busy.WaitOne();
                     //Update toolStrip and show current folder
                     statusStrip.Invoke((MethodInvoker) delegate 
                     {
@@ -142,7 +173,7 @@ namespace FileFinder
                     });
 
                     //Find files and update tree and file amount
-                    string[] File = Directory.GetFiles(_path, _fileName);
+                    string[] File = Directory.GetFiles(_path, _fileName).Where(path=>reg.IsMatch(path)).ToList().ToArray();
 
                     for (int i = 0; i < File.Length; i++)
                     {
@@ -164,6 +195,11 @@ namespace FileFinder
         {
             toolStripStatusLabel.Text = _status;
             statusStrip.Refresh();
+        }
+
+        private void button_pauseResume_Click(object sender, EventArgs e)
+        {
+            SetWorkerMode(button_pauseResume.Text == "Resume");
         }
 
         private void button_stop_Click(object sender, EventArgs e)

@@ -46,13 +46,14 @@
             this.label_filesFound = new System.Windows.Forms.Label();
             this.label_TimeText = new System.Windows.Forms.Label();
             this.label_time = new System.Windows.Forms.Label();
+            this.button_pauseResume = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_find
             // 
-            this.button_find.Location = new System.Drawing.Point(168, 84);
+            this.button_find.Location = new System.Drawing.Point(17, 82);
             this.button_find.Name = "button_find";
             this.button_find.Size = new System.Drawing.Size(98, 23);
             this.button_find.TabIndex = 0;
@@ -118,6 +119,7 @@
             this.panel1.Controls.Add(this.label_allFiles);
             this.panel1.Controls.Add(this.label_sumFilesText);
             this.panel1.Controls.Add(this.label_FilesFoundText);
+            this.panel1.Controls.Add(this.button_pauseResume);
             this.panel1.Controls.Add(this.button_stop);
             this.panel1.Controls.Add(this.button_find);
             this.panel1.Controls.Add(this.textBox_path);
@@ -132,7 +134,7 @@
             // 
             // button_stop
             // 
-            this.button_stop.Location = new System.Drawing.Point(168, 113);
+            this.button_stop.Location = new System.Drawing.Point(214, 82);
             this.button_stop.Name = "button_stop";
             this.button_stop.Size = new System.Drawing.Size(98, 23);
             this.button_stop.TabIndex = 0;
@@ -214,6 +216,16 @@
             this.label_time.TabIndex = 5;
             this.label_time.Text = "0";
             // 
+            // button_pauseResume
+            // 
+            this.button_pauseResume.Location = new System.Drawing.Point(114, 82);
+            this.button_pauseResume.Name = "button_pauseResume";
+            this.button_pauseResume.Size = new System.Drawing.Size(98, 23);
+            this.button_pauseResume.TabIndex = 0;
+            this.button_pauseResume.Text = "Pause";
+            this.button_pauseResume.UseVisualStyleBackColor = true;
+            this.button_pauseResume.Click += new System.EventHandler(this.button_pauseResume_Click);
+            // 
             // AppPathFinder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -253,6 +265,7 @@
         private System.Windows.Forms.Label label_FilesFoundText;
         private System.Windows.Forms.Label label_TimeText;
         private System.Windows.Forms.Label label_time;
+        private System.Windows.Forms.Button button_pauseResume;
     }
 }
 
