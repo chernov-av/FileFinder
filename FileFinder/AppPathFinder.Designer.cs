@@ -36,17 +36,17 @@
             this.button_setPath = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label_TimeText = new System.Windows.Forms.Label();
+            this.label_filesFound = new System.Windows.Forms.Label();
+            this.label_time = new System.Windows.Forms.Label();
+            this.label_allFiles = new System.Windows.Forms.Label();
+            this.label_sumFilesText = new System.Windows.Forms.Label();
+            this.label_FilesFoundText = new System.Windows.Forms.Label();
+            this.button_pauseResume = new System.Windows.Forms.Button();
             this.button_stop = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.backgroundWorkerApp = new System.ComponentModel.BackgroundWorker();
-            this.label_FilesFoundText = new System.Windows.Forms.Label();
-            this.label_sumFilesText = new System.Windows.Forms.Label();
-            this.label_allFiles = new System.Windows.Forms.Label();
-            this.label_filesFound = new System.Windows.Forms.Label();
-            this.label_TimeText = new System.Windows.Forms.Label();
-            this.label_time = new System.Windows.Forms.Label();
-            this.button_pauseResume = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -132,6 +132,70 @@
             this.panel1.Size = new System.Drawing.Size(324, 276);
             this.panel1.TabIndex = 5;
             // 
+            // label_TimeText
+            // 
+            this.label_TimeText.AutoSize = true;
+            this.label_TimeText.Location = new System.Drawing.Point(17, 150);
+            this.label_TimeText.Name = "label_TimeText";
+            this.label_TimeText.Size = new System.Drawing.Size(33, 13);
+            this.label_TimeText.TabIndex = 6;
+            this.label_TimeText.Text = "Time:";
+            // 
+            // label_filesFound
+            // 
+            this.label_filesFound.AutoSize = true;
+            this.label_filesFound.Location = new System.Drawing.Point(168, 216);
+            this.label_filesFound.Name = "label_filesFound";
+            this.label_filesFound.Size = new System.Drawing.Size(13, 13);
+            this.label_filesFound.TabIndex = 5;
+            this.label_filesFound.Text = "0";
+            // 
+            // label_time
+            // 
+            this.label_time.AutoSize = true;
+            this.label_time.Location = new System.Drawing.Point(168, 150);
+            this.label_time.Name = "label_time";
+            this.label_time.Size = new System.Drawing.Size(13, 13);
+            this.label_time.TabIndex = 5;
+            this.label_time.Text = "0";
+            // 
+            // label_allFiles
+            // 
+            this.label_allFiles.AutoSize = true;
+            this.label_allFiles.Location = new System.Drawing.Point(168, 185);
+            this.label_allFiles.Name = "label_allFiles";
+            this.label_allFiles.Size = new System.Drawing.Size(13, 13);
+            this.label_allFiles.TabIndex = 5;
+            this.label_allFiles.Text = "0";
+            // 
+            // label_sumFilesText
+            // 
+            this.label_sumFilesText.AutoSize = true;
+            this.label_sumFilesText.Location = new System.Drawing.Point(17, 185);
+            this.label_sumFilesText.Name = "label_sumFilesText";
+            this.label_sumFilesText.Size = new System.Drawing.Size(55, 13);
+            this.label_sumFilesText.TabIndex = 4;
+            this.label_sumFilesText.Text = "Total files:";
+            // 
+            // label_FilesFoundText
+            // 
+            this.label_FilesFoundText.AutoSize = true;
+            this.label_FilesFoundText.Location = new System.Drawing.Point(17, 216);
+            this.label_FilesFoundText.Name = "label_FilesFoundText";
+            this.label_FilesFoundText.Size = new System.Drawing.Size(61, 13);
+            this.label_FilesFoundText.TabIndex = 4;
+            this.label_FilesFoundText.Text = "Files found:";
+            // 
+            // button_pauseResume
+            // 
+            this.button_pauseResume.Location = new System.Drawing.Point(114, 82);
+            this.button_pauseResume.Name = "button_pauseResume";
+            this.button_pauseResume.Size = new System.Drawing.Size(98, 23);
+            this.button_pauseResume.TabIndex = 0;
+            this.button_pauseResume.Text = "Pause";
+            this.button_pauseResume.UseVisualStyleBackColor = true;
+            this.button_pauseResume.Click += new System.EventHandler(this.button_pauseResume_Click);
+            // 
             // button_stop
             // 
             this.button_stop.Location = new System.Drawing.Point(214, 82);
@@ -161,70 +225,6 @@
             this.backgroundWorkerApp.WorkerSupportsCancellation = true;
             this.backgroundWorkerApp.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerApp_DoWork);
             this.backgroundWorkerApp.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerApp_RunWorkerCompleted);
-            // 
-            // label_FilesFoundText
-            // 
-            this.label_FilesFoundText.AutoSize = true;
-            this.label_FilesFoundText.Location = new System.Drawing.Point(17, 216);
-            this.label_FilesFoundText.Name = "label_FilesFoundText";
-            this.label_FilesFoundText.Size = new System.Drawing.Size(61, 13);
-            this.label_FilesFoundText.TabIndex = 4;
-            this.label_FilesFoundText.Text = "Files found:";
-            // 
-            // label_sumFilesText
-            // 
-            this.label_sumFilesText.AutoSize = true;
-            this.label_sumFilesText.Location = new System.Drawing.Point(17, 185);
-            this.label_sumFilesText.Name = "label_sumFilesText";
-            this.label_sumFilesText.Size = new System.Drawing.Size(55, 13);
-            this.label_sumFilesText.TabIndex = 4;
-            this.label_sumFilesText.Text = "Total files:";
-            // 
-            // label_allFiles
-            // 
-            this.label_allFiles.AutoSize = true;
-            this.label_allFiles.Location = new System.Drawing.Point(168, 185);
-            this.label_allFiles.Name = "label_allFiles";
-            this.label_allFiles.Size = new System.Drawing.Size(13, 13);
-            this.label_allFiles.TabIndex = 5;
-            this.label_allFiles.Text = "0";
-            // 
-            // label_filesFound
-            // 
-            this.label_filesFound.AutoSize = true;
-            this.label_filesFound.Location = new System.Drawing.Point(168, 216);
-            this.label_filesFound.Name = "label_filesFound";
-            this.label_filesFound.Size = new System.Drawing.Size(13, 13);
-            this.label_filesFound.TabIndex = 5;
-            this.label_filesFound.Text = "0";
-            // 
-            // label_TimeText
-            // 
-            this.label_TimeText.AutoSize = true;
-            this.label_TimeText.Location = new System.Drawing.Point(17, 150);
-            this.label_TimeText.Name = "label_TimeText";
-            this.label_TimeText.Size = new System.Drawing.Size(33, 13);
-            this.label_TimeText.TabIndex = 6;
-            this.label_TimeText.Text = "Time:";
-            // 
-            // label_time
-            // 
-            this.label_time.AutoSize = true;
-            this.label_time.Location = new System.Drawing.Point(168, 150);
-            this.label_time.Name = "label_time";
-            this.label_time.Size = new System.Drawing.Size(13, 13);
-            this.label_time.TabIndex = 5;
-            this.label_time.Text = "0";
-            // 
-            // button_pauseResume
-            // 
-            this.button_pauseResume.Location = new System.Drawing.Point(114, 82);
-            this.button_pauseResume.Name = "button_pauseResume";
-            this.button_pauseResume.Size = new System.Drawing.Size(98, 23);
-            this.button_pauseResume.TabIndex = 0;
-            this.button_pauseResume.Text = "Pause";
-            this.button_pauseResume.UseVisualStyleBackColor = true;
-            this.button_pauseResume.Click += new System.EventHandler(this.button_pauseResume_Click);
             // 
             // AppPathFinder
             // 

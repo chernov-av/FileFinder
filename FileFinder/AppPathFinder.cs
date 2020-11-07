@@ -30,6 +30,8 @@ namespace FileFinder
             InitializeComponent();
             InitializeBackgroundWorker();
             UpdateStatus(AppStatus.Ready);
+            textBox_path.Text = Properties.Settings.Default.LastPath;
+            textBox_file.Text = Properties.Settings.Default.LastFileName;
         }
 
         private void InitializeBackgroundWorker()
@@ -72,11 +74,13 @@ namespace FileFinder
                 else
                 {
                     button_stop.Enabled = true;
+
                     FileList.Clear();
                     FolderList.Clear();
                     label_filesFound.Text = "0";
                     label_allFiles.Text = "0";
                     FileAmount = 0;
+
                     timer = new Timer();
                     timer.Tick += new EventHandler(TimerTick);
                     timer.Interval = 1000;
@@ -84,12 +88,19 @@ namespace FileFinder
                     minute = 0;
                     second = 1;
                     timer.Start();
+
+                    treeView1.Nodes.Clear();
+
+                    Properties.Settings.Default.LastPath = textBox_path.Text;
+                    Properties.Settings.Default.LastFileName = textBox_file.Text;
+                    Properties.Settings.Default.Save();
+
                     SetWorkerMode(true);
                     backgroundWorkerApp.RunWorkerAsync(Tuple.Create(textBox_path.Text, textBox_file.Text));
                 }
             }
         }
-
+        
         private void SetWorkerMode(bool running)
         {
             if (running)
@@ -182,13 +193,45 @@ namespace FileFinder
 
                         label_filesFound.Invoke((MethodInvoker) delegate
                         {
-                            label_filesFound.Text = this.FileList.Count.ToString();
+                            label_filesFound.Text = FileList.Count.ToString();
+                        });
+
+                        treeView1.Invoke((MethodInvoker) delegate
+                        {
+                            treeView1.BeginUpdate();
+                            BuildTree(treeView1.Nodes,FileList.ToArray());
+                            treeView1.EndUpdate();
                         });
                     }
                 }
                 catch (Exception exc)
-                {}
+                {
+                    //no access files
+                }
             }
+        }
+        private void BuildTree(TreeNodeCollection _nodes, string[] _list)
+        {
+            foreach (string path in _list)
+            {
+                TreeNodeCollection childs = _nodes;
+                string pathAndFile = path.Split(';')[0];
+                string[] parts = pathAndFile.Split('\\');
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    childs = FindOrCreateNode(childs, parts[i]).Nodes;
+                }
+            }
+        }
+
+        private TreeNode FindOrCreateNode(TreeNodeCollection _coll, string _name)
+        {
+            TreeNode[] nodeFound = _coll.Find(_name.ToLower(), false);
+            if (nodeFound.Length > 0)
+            {
+                return nodeFound[0];
+            }
+            return _coll.Add(_name.ToLower(), _name);
         }
 
         private void UpdateStatus(string _status)
