@@ -34,7 +34,6 @@
             this.textBox_file = new System.Windows.Forms.TextBox();
             this.label_file = new System.Windows.Forms.Label();
             this.button_setPath = new System.Windows.Forms.Button();
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label_TimeText = new System.Windows.Forms.Label();
             this.label_filesFound = new System.Windows.Forms.Label();
@@ -47,6 +46,7 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.backgroundWorkerApp = new System.ComponentModel.BackgroundWorker();
+            this.doubleBufferedTreeView1 = new FileFinder.DoubleBufferedTreeView();
             this.panel1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -103,17 +103,6 @@
             this.button_setPath.Text = "Set";
             this.button_setPath.UseVisualStyleBackColor = true;
             this.button_setPath.Click += new System.EventHandler(this.button_setPath_Click);
-            // 
-            // treeView1
-            // 
-            this.treeView1.Location = new System.Drawing.Point(12, 23);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(293, 278);
-            this.treeView1.TabIndex = 4;
-            this.treeView1.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeCollapse);
-            this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeExpand);
-            this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
-            this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
             // 
             // panel1
             // 
@@ -231,14 +220,21 @@
             this.backgroundWorkerApp.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerApp_DoWork);
             this.backgroundWorkerApp.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerApp_RunWorkerCompleted);
             // 
+            // doubleBufferedTreeView1
+            // 
+            this.doubleBufferedTreeView1.Location = new System.Drawing.Point(12, 23);
+            this.doubleBufferedTreeView1.Name = "doubleBufferedTreeView1";
+            this.doubleBufferedTreeView1.Size = new System.Drawing.Size(301, 276);
+            this.doubleBufferedTreeView1.TabIndex = 7;
+            // 
             // AppPathFinder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(658, 324);
+            this.Controls.Add(this.doubleBufferedTreeView1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.treeView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "AppPathFinder";
@@ -260,7 +256,6 @@
         private System.Windows.Forms.TextBox textBox_file;
         private System.Windows.Forms.Label label_file;
         private System.Windows.Forms.Button button_setPath;
-        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
@@ -273,6 +268,7 @@
         private System.Windows.Forms.Label label_TimeText;
         private System.Windows.Forms.Label label_time;
         private System.Windows.Forms.Button button_pauseResume;
+        private DoubleBufferedTreeView doubleBufferedTreeView1;
     }
 }
 

@@ -53,6 +53,9 @@
     <Compile Include="AppPathFinder.Designer.cs">
       <DependentUpon>AppPathFinder.cs</DependentUpon>
     </Compile>
+    <Compile Include="DoubleBufferedTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AppPathFinder.resx">

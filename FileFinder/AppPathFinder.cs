@@ -27,14 +27,14 @@ namespace FileFinder
 
         private bool isDoubleClick = false;
 
+
         public AppPathFinder()
         {
             InitializeComponent();
             InitializeBackgroundWorker();
             UpdateStatus(AppStatus.Ready);
             textBox_path.Text = Properties.Settings.Default.LastPath;
-            textBox_file.Text = Properties.Settings.Default.LastFileName;
-        }
+            textBox_file.Text = Properties.Settings.Default.LastFileName; }
 
         private void InitializeBackgroundWorker()
         {
@@ -93,7 +93,7 @@ namespace FileFinder
                     second = 1;
                     timer.Start();
 
-                    treeView1.Nodes.Clear();
+                    doubleBufferedTreeView1.Nodes.Clear();
 
                     Properties.Settings.Default.LastPath = textBox_path.Text;
                     Properties.Settings.Default.LastFileName = textBox_file.Text;
@@ -200,11 +200,11 @@ namespace FileFinder
                             label_filesFound.Text = FileList.Count.ToString();
                         });
 
-                        treeView1.Invoke((MethodInvoker) delegate
+                        doubleBufferedTreeView1.Invoke((MethodInvoker) delegate
                         {
-                            treeView1.BeginUpdate();
-                            BuildTree(treeView1.Nodes,FileList.ToArray());
-                            treeView1.EndUpdate();
+                            doubleBufferedTreeView1.BeginUpdate();
+                            BuildTree(doubleBufferedTreeView1.Nodes,FileList.ToArray());
+                            doubleBufferedTreeView1.EndUpdate();
                         });
                     }
                 }
@@ -214,6 +214,7 @@ namespace FileFinder
                 }
             }
         }
+
         private void BuildTree(TreeNodeCollection _nodes, string[] _list)
         {
             foreach (string path in _list)
